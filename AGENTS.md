@@ -13,7 +13,7 @@ The project began with `IODM-v0.3-webawesome.zip`, extracted as `iodm-webawesome
 | `standards/` | Git submodule pinned to a commit of `IODM-SI/specification` |
 | `standards/source/{template,standard,card,reader,issuer,trust,identity,manifest,whitepaper}.typ` | Shared Typst template and eight publication sources |
 | `build.sh` | Runs the submodule's Typst build |
-| `standards/pdf/` | Versioned PDFs copied to `_site/standard/` |
+| `standards/pdf/` | Locally generated PDFs copied to `_site/standard/` |
 | `site/index.njk` | Slovenian landing page |
 | `site/standard/index.njk` | Document catalog |
 | `site/trust/index.njk` | Human-readable issuer register |
@@ -32,7 +32,7 @@ npm run build        # Outputs _site/
 npm run dev          # Development server
 ```
 
-GitHub Pages: the website workflow uses Node 22 and builds the PDFs from the pinned specification source before compiling and uploading `_site`. Imported v0.3 PDFs are fallback Pandoc/XeLaTeX exports for local builds. The specification workflow builds PDFs for PRs and tagged releases, then dispatches the website workflow to open a PR for the submodule pin and catalog changes. See the README for repository-scoped Actions credentials. Deployments use the website's GitHub Pages workflow.
+GitHub Pages: the website workflow uses Node 22 and builds the PDFs from the pinned specification source before compiling and uploading `_site`. Run `./build.sh` before building the site locally. The specification workflow uploads generated PDFs for PRs and attaches them to tagged GitHub Releases, then dispatches the website workflow to open a PR for the submodule pin and catalog changes. See the README for repository-scoped Actions credentials.
 
 ## 3. Publication structure
 

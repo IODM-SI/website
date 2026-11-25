@@ -5,8 +5,8 @@ Razvojni osnutek vsebuje sedem specifikacij in belo knjigo. Register je neaktive
 ## Specifikacije
 
 [Repozitorij specifikacij](https://github.com/IODM-SI/specification) je vključen kot Gitov podmodul `standards/`.
-Izvorne datoteke so v `standards/source/`, različice PDF za objavo pa v `standards/pdf/`.
-Za ponovno izdelavo PDF-jev uporabite `./build.sh` s Typst CLI 0.15 ali novejšim in pisavo DejaVu Sans. Imena PDF-jev izhajajo iz identifikatorja in različice v glavi datoteke Typst.
+Izvorne datoteke so v `standards/source/`. Objavljeni PDF-ji so v [izdajah specifikacij](https://github.com/IODM-SI/specification/releases).
+Ukaz `./build.sh` lokalno izdela PDF-je v `standards/pdf/`. Zahteva Typst CLI 0.15 ali novejši in pisavo DejaVu Sans. Imena PDF-jev izhajajo iz identifikatorja in različice v glavi datoteke Typst.
 
 Pred objavo potrdite AID, politiko PKI, testne vektorje in izvedite fizične preskuse.
 
@@ -16,12 +16,13 @@ Zahteva Node.js 20 ali novejši. V korenu projekta:
 
 ```sh
 git submodule update --init
+./build.sh
 npm ci
 npm run dev
 npm run build
 ```
 
-Razvojni strežnik je na http://localhost:8080. Eleventy kopira PDF-je na naslove pod `/standard/`. Lokalno uporabite `./build.sh`, če pripeta revizija vsebuje novejše specifikacije od priloženih PDF-jev.
+Razvojni strežnik je na http://localhost:8080. Eleventy kopira ustvarjene PDF-je na naslove pod `/standard/`.
 
 Podatki za strani so v `site/_data/`, skupne predloge pa v `site/_includes/`. Eleventy ob vsaki gradnji zažene Tailwind CLI, ki iz predlog in datoteke `site/assets/site.css` izdela lokalni slogovni list. Barvna shema sledi sistemski nastavitvi svetlega ali temnega načina. Register je predstavitveni in ne objavlja podpisanega manifesta. Datoteka `issuers.json` ostane prazna do potrditve izdajateljev.
 

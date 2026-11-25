@@ -25,10 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
+          submodules: true
           persist-credentials: false
-      - uses: ./.github/actions/checkout-standards
-        with:
-          token: ${{ secrets.SPECIFICATION_READ_TOKEN }}
       - uses: actions/setup-node@v6
         with:
           node-version: 22

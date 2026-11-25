@@ -40,11 +40,13 @@ jobs:
           else
             echo 'changed=true' >> "$GITHUB_OUTPUT"
           fi
-      - uses: ./.github/actions/checkout-standards
+      - uses: actions/checkout@v6
         if: steps.release.outputs.changed == 'true'
         with:
-          token: ${{ secrets.SPECIFICATION_READ_TOKEN }}
+          repository: IODM-SI/specification
           ref: refs/tags/${{ inputs.tag }}
+          path: standards
+          persist-credentials: false
       - name: Verify the tag commit
         if: steps.release.outputs.changed == 'true'
         env:

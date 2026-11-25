@@ -29,18 +29,17 @@ Podatki za strani so v `site/_data/`, skupne predloge pa v `site/_includes/`. El
 
 Po potisku na `main` potek za GitHub Pages iz pripete revizije izdela PDF-je,
 zgradi Eleventy in objavi `_site/`. V nastavitvah Pages izberite vir
-**GitHub Actions**. Zasebni repozitorij za Pages potrebuje ustrezen paket
-GitHub. Za preverjanje gradnje brez objave ročno zaženite potek z izklopljeno
-možnostjo `deploy`.
+**GitHub Actions**. Za preverjanje gradnje brez objave ročno zaženite potek
+z izklopljeno možnostjo `deploy`.
 
 Ob novi izdaji specifikacij se sproži potek **Update the specification submodule**.
 Preveri oznako Git, izdela PDF-je in odpre PR z novo revizijo podmodula ter
 posodobljenimi povezavami v katalogu.
 
-Za zasebna repozitorija nastavite naslednje skrivnosti GitHub Actions.
+Za povezavo med potekoma in samodejni PR nastavite naslednji skrivnosti
+GitHub Actions.
 
 | Repozitorij | Skrivnost | Dostop žetona |
 |---|---|---|
 | `specification` | `WEBSITE_RELEASE_TOKEN` | `website`, Actions (write) |
-| `website` | `SPECIFICATION_READ_TOKEN` | `specification`, Contents (read) |
 | `website` | `WEBSITE_PR_TOKEN` | `website`, Contents (write) in Pull requests (write) |

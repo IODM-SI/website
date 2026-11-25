@@ -1,0 +1,55 @@
+---
+layout: base.njk
+title: Register potrjenih izdajateljev
+---
+<section class="section-pad">
+  <div class="page-width">
+    <div class="eyebrow">Infrastruktura zaupanja</div>
+    <h1 class="page-heading">Register potrjenih izdajateljev</h1>
+    <p class="lead max-w-3xl">
+      Register bo objavljal potrdila CA preverjenih izdajateljev, njihov status in
+      podatke o veljavnosti. Zaupanje izdajatelju ne pomeni dovoljenja za dostop.
+    </p>
+
+    {% if issuers.length %}
+      <div class="my-6 overflow-x-auto rounded-lg border border-line">
+        <table class="w-full border-collapse bg-surface text-left">
+          <thead class="bg-page">
+            <tr>
+              <th class="px-4 py-3" scope="col">IID</th>
+              <th class="px-4 py-3" scope="col">Izdajatelj</th>
+              <th class="px-4 py-3" scope="col">Status</th>
+              <th class="px-4 py-3" scope="col">Potrdilo CA</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            {% for issuer in issuers %}
+              <tr>
+                <td class="px-4 py-3">{{ issuer.id }}</td>
+                <td class="px-4 py-3">{{ issuer.name }}</td>
+                <td class="px-4 py-3">
+                  <span class="rounded-full border border-line px-2 py-1 text-sm text-muted">{{ issuer.status }}</span>
+                </td>
+                <td class="px-4 py-3">
+                  <a class="button button-outline whitespace-nowrap" href="{{ issuer.certificate }}">Prenesi CA</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="card my-6 border-s-4 border-s-accent">
+        <strong>Register še ni aktiven</strong>
+        <p class="mt-2 text-muted">
+          Trenutno ni objavljenih potrjenih izdajateljev. Produkcijski podpisani seznam
+          bo na voljo po vzpostavitvi postopka preverjanja.
+        </p>
+      </div>
+    {% endif %}
+
+    <a class="button button-outline" href="/standard/IODM-005-v0.3.pdf">
+      Pravila registra · IODM-005 (PDF)
+    </a>
+  </div>
+</section>

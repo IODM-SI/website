@@ -1,0 +1,17 @@
+[
+  {
+    "label": "A4 · SELECT",
+    "title": "Izberi",
+    "description": "Bralnik izbere aplikacijo IODM in datoteko s potrdilom."
+  },
+  {
+    "label": "B0 · READ BINARY",
+    "title": "Preberi",
+    "description": "Prebere potrdilo X.509 in preveri verigo zaupanja."
+  },
+  {
+    "label": "88 · INTERNAL AUTHENTICATE",
+    "title": "Preveri",
+    "description": "S svežim izzivom preveri podpis medija, nato sistem odloči o dostopu."
+  }
+]

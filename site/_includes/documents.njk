@@ -1,0 +1,14 @@
+<div class="card-grid">
+  {% for document in documents %}
+    <article class="card flex flex-col border-t-3 border-t-accent">
+      <div class="eyebrow">{{ document.label }}</div>
+      <h3 class="card-title">{{ document.title }}</h3>
+      <p class="mt-2 mb-5 grow text-muted">{{ document.description }}</p>
+      <a
+        class="button button-outline"
+        href="{{ document.file }}"
+        aria-label="Prenesi {{ document.label }} v PDF"
+      >Prenesi PDF <span aria-hidden="true">↓</span></a>
+    </article>
+  {% endfor %}
+</div>

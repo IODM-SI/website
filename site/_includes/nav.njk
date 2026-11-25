@@ -1,0 +1,23 @@
+{% set navigation = [
+  { url: '/', label: 'O projektu' },
+  { url: '/standard/', label: 'Specifikacije' },
+  { url: '/trust/', label: 'Register CA' }
+] %}
+
+<header class="border-b border-line bg-surface">
+  <nav class="page-width flex flex-wrap items-center justify-between gap-4 py-4" aria-label="Glavna navigacija">
+    <a class="rounded-sm text-black dark:text-white" href="/" aria-label="IODM – domača stran">
+      {% include 'logo.njk' %}
+    </a>
+    <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+      {% for item in navigation %}
+        <li>
+          <a
+            class="hover:text-accent aria-[current=page]:font-bold aria-[current=page]:text-accent"
+            href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}
+          >{{ item.label }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</header>

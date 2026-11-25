@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="sl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>{{ title }} | {{ site.name }}</title>
+    <meta name="description" content="{{ description or site.description }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <link rel="stylesheet" href="/assets/site.css">
+  </head>
+  <body class="bg-page font-sans leading-relaxed text-ink">
+    <a
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-10 focus:rounded focus:bg-surface focus:px-3 focus:py-2"
+      href="#main"
+    >Preskoči na vsebino</a>
+    {% include 'nav.njk' %}
+
+    <main id="main" class="min-h-[70vh]">
+      {{ content | safe }}
+    </main>
+
+    {% include 'footer.njk' %}
+  </body>
+</html>

@@ -1,0 +1,32 @@
+[
+  {
+    "label": "01 / INTEROPERABILNOST",
+    "title": "Standardni ukazi APDU",
+    "description": "Izbira aplikacije, branje datoteke in avtentikacija z ukazi ISO/IEC 7816-4."
+  },
+  {
+    "label": "02 / ZAUPANJE",
+    "title": "Asimetrična kriptografija",
+    "description": "ECDSA P-256, SHA-256 in PKI. Bralnik za avtentikacijo ne potrebuje zasebnega ključa medija."
+  },
+  {
+    "label": "03 / NEODVISNOST",
+    "title": "Enoten profil",
+    "description": "Predviden za različne platforme pametnih kartic, ki implementirajo isti podatkovni in kriptografski profil."
+  },
+  {
+    "label": "04 / IZBIRA DOBAVITELJA",
+    "title": "Menjava brez ponovne izdaje",
+    "description": "Čitalnik drugega proizvajalca lahko uporablja obstoječe skladne medije ob isti politiki zaupanja."
+  },
+  {
+    "label": "05 / VEČ IZDAJATELJEV",
+    "title": "Skupna infrastruktura zaupanja",
+    "description": "Dodajanje izdajateljev prek potrdil CA in konfiguracije, brez lastniških ključev ali spremembe protokola."
+  },
+  {
+    "label": "06 / PREVERLJIVOST",
+    "title": "Ločeno certificiranje",
+    "description": "Mediji in čitalniki se preskušajo po ločenih specifikacijah, tudi na neodvisnih platformah."
+  }
+]

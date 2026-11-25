@@ -1,0 +1,50 @@
+[
+  {
+    "label": "IODM-001",
+    "title": "Tehnična specifikacija brezstične poverilnice",
+    "description": "Protokol, normativni profil X.509, IODM-ID in medproizvajalska interoperabilnost.",
+    "file": "/standard/IODM-001-v0.3.pdf"
+  },
+  {
+    "label": "IODM-002",
+    "title": "Certificiranje dostopnih medijev",
+    "description": "Preskusni postopki in kontrolni seznam skladnosti dostopnih medijev.",
+    "file": "/standard/IODM-002-v0.3.pdf"
+  },
+  {
+    "label": "IODM-003",
+    "title": "Certificiranje čitalnikov",
+    "description": "Preskusni postopki in kontrolni seznam skladnosti čitalnikov ter zaledja.",
+    "file": "/standard/IODM-003-v0.3.pdf"
+  },
+  {
+    "label": "IODM-004",
+    "title": "Zahteve za izdajatelje dostopnih medijev",
+    "description": "Politika izdaje, profil CA, zaščita ključev in potrditev izdajatelja.",
+    "file": "/standard/IODM-004-v0.3.pdf"
+  },
+  {
+    "label": "IODM-005",
+    "title": "Register zaupanja vrednih izdajateljev",
+    "description": "Podpisani register CA, distribucija, preklic in menjava ključev.",
+    "file": "/standard/IODM-005-v0.3.pdf"
+  },
+  {
+    "label": "IODM-006",
+    "title": "Identifikacija medijev in integracija s SKD",
+    "description": "48-bitni IODM-ID v potrdilu X.509 ter integracija s SKD.",
+    "file": "/standard/IODM-006-v0.3.pdf"
+  },
+  {
+    "label": "IODM-007",
+    "title": "Elektronski manifest dostopnih medijev",
+    "description": "Podpisani podatki za množični uvoz medijev.",
+    "file": "/standard/IODM-007-v0.3.pdf"
+  },
+  {
+    "label": "IODM-WP-001",
+    "title": "Odprta in interoperabilna kontrola dostopa",
+    "description": "Razlaga arhitekture, prednosti in varnostnih omejitev IODM.",
+    "file": "/standard/IODM-WP-001-v0.3.pdf"
+  }
+]

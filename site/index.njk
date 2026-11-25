@@ -1,0 +1,131 @@
+---
+layout: base.njk
+title: Interoperabilni dostopni medij
+---
+<section class="bg-[#102d3d] py-12 text-white md:py-20 dark:bg-slate-950">
+  <div class="page-width split">
+    <div>
+      <span class="inline-block rounded-full border border-teal-200/50 px-3 py-1 text-sm text-teal-100">
+        Odprta tehnična specifikacija
+      </span>
+      <h1 class="my-6 text-[clamp(3rem,7vw,5.2rem)] leading-[1.03] font-extrabold tracking-tighter">
+        En medij.<br>Več sistemov.
+      </h1>
+      <p class="mb-5 text-lg text-[#c6d8dc]">
+        {{ site.description }} Brez obveznih lastniških ključev in odvisnosti od
+        posameznega proizvajalca.
+      </p>
+      <a
+        class="button border-transparent bg-teal-200 px-5 py-3 text-base text-slate-950 hover:bg-teal-100 focus-visible:outline-amber-300"
+        href="/standard/"
+      >Tehnične specifikacije <span aria-hidden="true">→</span></a>
+      <p class="mt-4 text-sm text-[#c6d8dc]">Razvojni osnutek {{ site.version }} · {{ site.date }}</p>
+    </div>
+
+    <div class="rounded-2xl border border-[#426471] bg-[#163847] p-5">
+      <div class="mb-4 text-center text-xs font-bold tracking-widest text-teal-200 uppercase">Federativno zaupanje</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="architecture-node">Izdajatelj A</div>
+        <div class="architecture-node">Izdajatelj B</div>
+      </div>
+      <div class="text-center text-2xl text-teal-200" aria-hidden="true">↓</div>
+      <div class="architecture-node">Potrdila X.509 · IODM-ID</div>
+      <div class="text-center text-2xl text-teal-200" aria-hidden="true">↓</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="architecture-node">Čitalnik A</div>
+        <div class="architecture-node">Čitalnik B</div>
+      </div>
+      <div class="text-center text-2xl text-teal-200" aria-hidden="true">↓</div>
+      <div class="architecture-node">Sistem kontrole dostopa</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="o-projektu">
+  <div class="page-width">
+    <div class="eyebrow">Načela zasnove</div>
+    <h2 class="section-heading">Skupen jezik za dostopne medije.</h2>
+    <p class="lead max-w-3xl">
+      Namesto zanašanja na identifikator kartice ali skupne skrivnosti IODM
+      uporablja potrdilo X.509 in dokaz posedovanja zasebnega ključa.
+    </p>
+
+    <div class="card-grid">
+      {% for feature in features %}
+        <article class="card">
+          <div class="eyebrow">{{ feature.label }}</div>
+          <h3 class="card-title">{{ feature.title }}</h3>
+          <p class="mt-2 text-muted">{{ feature.description }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section-pad section-alternate">
+  <div class="page-width">
+    <div class="eyebrow">Potek avtentikacije</div>
+    <h2 class="section-heading">Tri vrste ukazov. En dokaz.</h2>
+
+    <div class="card-grid">
+      {% for step in steps %}
+        <article class="card">
+          <code class="text-sm text-accent">{{ step.label }}</code>
+          <h3 class="card-title">{{ step.title }}</h3>
+          <p class="mt-2 text-muted">{{ step.description }}</p>
+        </article>
+      {% endfor %}
+    </div>
+
+    <p class="mt-4 text-sm text-muted">
+      Profil ne zagotavlja zaupnosti ali zaščite pred napadi s posredovanjem (relay).
+      Avtentikacija sama ne pomeni dovoljenja za dostop.
+    </p>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="page-width">
+    <div class="eyebrow">Tehnična dokumentacija</div>
+    <h2 class="section-heading">Specifikacije IODM</h2>
+    <p class="lead">Različica {{ site.version }} · delovni osnutki za pregled in pilotne implementacije.</p>
+
+    {% include 'documents.njk' %}
+  </div>
+</section>
+
+<section class="section-pad section-alternate">
+  <div class="page-width split">
+    <div>
+      <div class="eyebrow">Preverljiva identiteta</div>
+      <h2 class="section-heading">Identiteta je del potrdila.</h2>
+      <p class="my-4">
+        IODM-ID združuje identifikator izdajatelja in medija v 48-bitno vrednost.
+        Podpisano potrdilo X.509 vsebuje identifikator v atributu <code>subject.serialNumber</code>.
+      </p>
+      <a class="button button-outline" href="/standard/IODM-006-v0.3.pdf">
+        Profil identifikacije <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="flex overflow-hidden rounded-md font-mono text-[clamp(1rem,3vw,1.8rem)] font-bold text-white">
+        <span class="bg-[#174968] px-3 py-2">0001</span>
+        <span class="grow bg-teal-700 px-3 py-2">00001234</span>
+      </div>
+      <p class="mt-3 text-sm text-muted">16 bitov izdajatelja · 32 bitov medija</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad">
+  <div class="page-width">
+    <div class="eyebrow">Infrastruktura zaupanja</div>
+    <h2 class="section-heading">Register potrjenih izdajateljev</h2>
+    <p class="lead mb-5 max-w-3xl">
+      Na iodm.si bodo objavljena potrdila CA preverjenih izdajateljev, njihov status
+      in podatki o veljavnosti.
+    </p>
+    <a class="button button-primary" href="/trust/">O registru <span aria-hidden="true">→</span></a>
+  </div>
+</section>

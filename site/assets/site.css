@@ -1,0 +1,109 @@
+@import "tailwindcss" source(none);
+@source "../**/*.njk";
+
+@theme inline {
+  --color-page: var(--site-page);
+  --color-surface: var(--site-surface);
+  --color-ink: var(--site-ink);
+  --color-muted: var(--site-muted);
+  --color-line: var(--site-line);
+  --color-accent: var(--site-accent);
+  --color-accent-hover: var(--site-accent-hover);
+  --color-accent-ink: var(--site-accent-ink);
+  --color-focus: var(--site-focus);
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+    --site-page: #f5f8f7;
+    --site-surface: #ffffff;
+    --site-ink: #15313d;
+    --site-muted: #536975;
+    --site-line: #d8e3e1;
+    --site-accent: #006d70;
+    --site-accent-hover: #00585b;
+    --site-accent-ink: #ffffff;
+    --site-focus: #935600;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --site-page: #101c24;
+      --site-surface: #172832;
+      --site-ink: #e9f2f4;
+      --site-muted: #b4c7ce;
+      --site-line: #3b515b;
+      --site-accent: #80e0d4;
+      --site-accent-hover: #a5f3e9;
+      --site-accent-ink: #10282d;
+      --site-focus: #fbbf24;
+    }
+  }
+
+  a:focus-visible {
+    @apply outline-2 outline-offset-4 outline-focus;
+  }
+}
+
+@layer components {
+  .page-width {
+    @apply mx-auto w-full max-w-[74rem] px-4 sm:px-6;
+  }
+
+  .section-pad {
+    @apply py-12 md:py-18;
+  }
+
+  .section-alternate {
+    @apply border-y border-line bg-surface;
+  }
+
+  .split {
+    @apply grid items-center gap-8 md:grid-cols-[1.2fr_1fr] md:gap-12;
+  }
+
+  .eyebrow {
+    @apply text-xs font-bold tracking-widest text-accent uppercase;
+  }
+
+  .page-heading {
+    @apply mt-2 text-[clamp(2.3rem,5vw,3.5rem)] leading-tight font-bold tracking-tight;
+  }
+
+  .section-heading {
+    @apply mt-2 text-[clamp(1.9rem,4vw,2.8rem)] leading-tight font-bold tracking-tight;
+  }
+
+  .lead {
+    @apply mt-4 text-lg leading-relaxed text-muted;
+  }
+
+  .card-grid {
+    @apply mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .card {
+    @apply rounded-xl border border-line bg-surface p-5;
+  }
+
+  .card-title {
+    @apply mt-3 text-xl leading-tight font-semibold tracking-tight;
+  }
+
+  .button {
+    @apply inline-flex w-fit items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold;
+  }
+
+  .button-primary {
+    @apply border-transparent bg-accent text-accent-ink hover:bg-accent-hover;
+  }
+
+  .button-outline {
+    @apply border-accent text-accent hover:bg-accent hover:text-accent-ink;
+  }
+
+  .architecture-node {
+    @apply rounded-md border border-[#527580] bg-[#204655] px-2 py-3 text-center;
+  }
+}

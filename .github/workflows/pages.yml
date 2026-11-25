@@ -1,0 +1,81 @@
+name: Build and deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy to GitHub Pages after building
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages-${{ github.ref }}
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/checkout-standards
+        with:
+          token: ${{ secrets.SPECIFICATION_READ_TOKEN }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - uses: typst-community/setup-typst@v5.3.2
+        with:
+          typst-version: "0.15.1"
+      - name: Compile PDFs from the pinned specification
+        run: |
+          sudo apt-get install -y fonts-dejavu-core
+          export SOURCE_DATE_EPOCH="$(git -C standards log -1 --format=%ct)"
+          ./build.sh .build/pdfs
+      - uses: actions/configure-pages@v6
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.deploy)
+        id: pages
+      - run: npm ci
+      - name: Build website
+        env:
+          IODM_PDF_DIRECTORY: .build/pdfs
+          PAGES_BASE_PATH: ${{ steps.pages.outcome == 'success' && steps.pages.outputs.base_path || '' }}
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          if [[ -z "$PAGES_BASE_URL" ]]; then
+            export PAGES_BASE_PATH=/website
+          fi
+          npm run build
+      - uses: actions/upload-pages-artifact@v5
+        if: steps.pages.outcome == 'success'
+        with:
+          path: _site
+      - uses: actions/upload-artifact@v7
+        if: steps.pages.outcome == 'skipped'
+        with:
+          name: iodm-website
+          path: _site
+          if-no-files-found: error
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.deploy)
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deploy

@@ -32,7 +32,7 @@ npm run build        # Outputs _site/
 npm run dev          # Development server
 ```
 
-Cloudflare Pages: Node 22, initialize the submodule before `npm run build`, and use output `_site`. The website build uses the PDFs checked into the pinned specification commit. The imported v0.3 PDFs are the original fallback Pandoc/XeLaTeX exports. To publish a specification update, commit the sources and PDFs in `IODM-SI/specification`, then update the website's submodule pin and download metadata. Do not deploy without explicit owner approval.
+GitHub Pages: the website workflow uses Node 22 and builds the PDFs from the pinned specification source before compiling and uploading `_site`. Imported v0.3 PDFs are fallback Pandoc/XeLaTeX exports for local builds. The specification workflow builds PDFs for PRs and tagged releases, then dispatches the website workflow to open a PR for the submodule pin and catalog changes. See the README for repository-scoped Actions credentials. Deployments use the website's GitHub Pages workflow.
 
 ## 3. Publication structure
 

@@ -1,0 +1,34 @@
+name: Check out IODM specifications
+description: Check out the private specification repository in the standards submodule path.
+
+inputs:
+  token:
+    description: Token with Contents read permission on IODM-SI/specification.
+    required: true
+  ref:
+    description: Specification Git ref. Defaults to the website's pinned commit.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Resolve specification ref
+      id: ref
+      shell: bash
+      env:
+        SPEC_REF: ${{ inputs.ref }}
+        SPEC_READ_TOKEN: ${{ inputs.token }}
+      run: |
+        if [[ -z "$SPEC_READ_TOKEN" ]]; then
+          echo '::error::Set SPECIFICATION_READ_TOKEN to a token with Contents read access to IODM-SI/specification.'
+          exit 1
+        fi
+        ref="${SPEC_REF:-$(git rev-parse HEAD:standards)}"
+        echo "ref=$ref" >> "$GITHUB_OUTPUT"
+    - uses: actions/checkout@v6
+      with:
+        repository: IODM-SI/specification
+        ref: ${{ steps.ref.outputs.ref }}
+        path: standards
+        token: ${{ inputs.token }}
+        persist-credentials: false

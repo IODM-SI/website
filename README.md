@@ -21,6 +21,26 @@ npm run dev
 npm run build
 ```
 
-Razvojni strežnik je na http://localhost:8080. Eleventy kopira PDF-je iz podmodula na obstoječe naslove `/standard/`. Za objavo uporabite mapo `_site/`. Za Cloudflare Pages uporabite Node.js 22 in pred ukazom `npm run build` inicializirajte podmodul.
+Razvojni strežnik je na http://localhost:8080. Eleventy kopira PDF-je na naslove pod `/standard/`. Lokalno uporabite `./build.sh`, če pripeta revizija vsebuje novejše specifikacije od priloženih PDF-jev.
 
 Podatki za strani so v `site/_data/`, skupne predloge pa v `site/_includes/`. Eleventy ob vsaki gradnji zažene Tailwind CLI, ki iz predlog in datoteke `site/assets/site.css` izdela lokalni slogovni list. Barvna shema sledi sistemski nastavitvi svetlega ali temnega načina. Register je predstavitveni in ne objavlja podpisanega manifesta. Datoteka `issuers.json` ostane prazna do potrditve izdajateljev.
+
+## GitHub Actions
+
+Po potisku na `main` potek za GitHub Pages iz pripete revizije izdela PDF-je,
+zgradi Eleventy in objavi `_site/`. V nastavitvah Pages izberite vir
+**GitHub Actions**. Zasebni repozitorij za Pages potrebuje ustrezen paket
+GitHub. Za preverjanje gradnje brez objave ročno zaženite potek z izklopljeno
+možnostjo `deploy`.
+
+Ob novi izdaji specifikacij se sproži potek **Update the specification submodule**.
+Preveri oznako Git, izdela PDF-je in odpre PR z novo revizijo podmodula ter
+posodobljenimi povezavami v katalogu.
+
+Za zasebna repozitorija nastavite naslednje skrivnosti GitHub Actions.
+
+| Repozitorij | Skrivnost | Dostop žetona |
+|---|---|---|
+| `specification` | `WEBSITE_RELEASE_TOKEN` | `website`, Actions (write) |
+| `website` | `SPECIFICATION_READ_TOKEN` | `specification`, Contents (read) |
+| `website` | `WEBSITE_PR_TOKEN` | `website`, Contents (write) in Pull requests (write) |

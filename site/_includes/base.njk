@@ -6,7 +6,7 @@
     <meta name="color-scheme" content="light dark">
     <title>{{ title }} | {{ site.name }}</title>
     <meta name="description" content="{{ description or site.description }}">
-    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <link rel="canonical" href="{{ deploymentUrl or site.url }}{{ page.url }}">
     <link rel="stylesheet" href="/assets/site.css">
   </head>
   <body class="bg-page font-sans leading-relaxed text-ink">

@@ -1,0 +1,97 @@
+name: Update the specification submodule
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published specification release tag
+        type: string
+        required: true
+      revision:
+        description: Git commit for the published tag
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: specification-update-${{ inputs.revision }}
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Validate release input
+        id: release
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_SHA: ${{ inputs.revision }}
+        run: |
+          git check-ref-format "refs/tags/$RELEASE_TAG"
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          if [[ "$RELEASE_SHA" == "$(git rev-parse HEAD:standards)" ]]; then
+            echo 'The website already pins this specification commit.'
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: ./.github/actions/checkout-standards
+        if: steps.release.outputs.changed == 'true'
+        with:
+          token: ${{ secrets.SPECIFICATION_READ_TOKEN }}
+          ref: refs/tags/${{ inputs.tag }}
+      - name: Verify the tag commit
+        if: steps.release.outputs.changed == 'true'
+        env:
+          RELEASE_SHA: ${{ inputs.revision }}
+        run: test "$(git -C standards rev-parse HEAD)" = "$RELEASE_SHA"
+      - uses: typst-community/setup-typst@v5.3.2
+        if: steps.release.outputs.changed == 'true'
+        with:
+          typst-version: "0.15.1"
+      - uses: actions/setup-node@v6
+        if: steps.release.outputs.changed == 'true'
+        with:
+          node-version: 22
+      - name: Update and validate publication links
+        if: steps.release.outputs.changed == 'true'
+        run: |
+          sudo apt-get install -y fonts-dejavu-core
+          ./build.sh .build/pdfs
+          node scripts/update-publications.mjs .build/pdfs
+      - name: Push update and open pull request
+        if: steps.release.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.WEBSITE_PR_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_SHA: ${{ inputs.revision }}
+        run: |
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo '::error::Set WEBSITE_PR_TOKEN to a website token with Contents and Pull requests write permissions.'
+            exit 1
+          fi
+
+          branch="automation/specification-$RELEASE_SHA"
+          existing="$(gh pr list --base main --head "$branch" --state all --json url --jq '.[0].url // empty')"
+          if [[ -n "$existing" ]]; then
+            echo "Pull request already exists: $existing"
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          gh auth setup-git
+          remote_ref="refs/heads/$branch"
+          if [[ -z "$(git ls-remote origin "$remote_ref")" ]]; then
+            git add standards site/_data/documents.json site/_data/site.json
+            git commit -m "Update specification to $RELEASE_TAG"
+            git push origin "HEAD:$remote_ref"
+          fi
+          gh pr create --base main --head "$branch" \
+            --title "Update specification to $RELEASE_TAG" \
+            --body "Pin the standards submodule to release $RELEASE_TAG ($RELEASE_SHA) and update the PDF catalog."

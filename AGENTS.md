@@ -11,7 +11,8 @@ The project began with `IODM-v0.3-webawesome.zip`, extracted as `iodm-webawesome
 | Path | Role |
 |---|---|
 | `standards/` | Git submodule pinned to a commit of `IODM-SI/specification` |
-| `standards/source/{template,standard,card,reader,issuer,trust,identity,manifest,whitepaper}.typ` | Shared Typst template and eight publication sources |
+| `standards/source/template.typ` | Shared Typst template |
+| `standards/source/{001-standard,002-card,003-reader,004-issuer,005-trust,006-identity,007-manifest,WP-001-whitepaper}.typ` | Eight publication sources |
 | `build.sh` | Runs the submodule's Typst build |
 | `standards/pdf/` | Locally generated PDFs copied to `_site/standard/` |
 | `site/index.njk` | Slovenian landing page |
@@ -38,14 +39,14 @@ GitHub Pages: the website workflow uses Node 22 and builds the PDFs from the pin
 
 | ID | Source basename | Scope |
 |---|---|---|
-| IODM-001 | standard | Normative card interface, APDU, X.509 leaf profile, cryptography, interoperability |
-| IODM-002 | card | Card/medium conformity assessment; M-01–M-25 |
-| IODM-003 | reader | Reader and verification backend conformity; B-01–B-37 |
-| IODM-004 | issuer | Issuer eligibility, CA profile, CP/CPS, key custody, issuance and revocation; ISS-01–10 |
-| IODM-005 | trust | Signed issuer registry, trust distribution, rollback protection; TR-01–08 |
-| IODM-006 | identity | IODM-ID and PACS/SKD integration; ID-01–07 |
-| IODM-007 | manifest | Signed batch enrollment manifests; MF-01–08 |
-| IODM-WP-001 | whitepaper | Informative rationale and ecosystem positioning, not normative |
+| IODM-001 | 001-standard | Normative card interface, APDU, X.509 leaf profile, cryptography, interoperability |
+| IODM-002 | 002-card | Card/medium conformity assessment; M-01–M-25 |
+| IODM-003 | 003-reader | Reader and verification backend conformity; B-01–B-37 |
+| IODM-004 | 004-issuer | Issuer eligibility, CA profile, CP/CPS, key custody, issuance and revocation; ISS-01–10 |
+| IODM-005 | 005-trust | Signed issuer registry, trust distribution, rollback protection; TR-01–08 |
+| IODM-006 | 006-identity | IODM-ID and PACS/SKD integration; ID-01–07 |
+| IODM-007 | 007-manifest | Signed batch enrollment manifests; MF-01–08 |
+| IODM-WP-001 | WP-001-whitepaper | Informative rationale and ecosystem positioning, not normative |
 
 Keep IODM-001 the single authority for on-card wire format and leaf certificate profile; refer to it instead of creating divergent copies. IODM-004 owns CA rules, 005 registry wire format, 006 ID lifecycle/backend integration, 007 batch manifest. Keep test identifiers stable and add traceability to individual normative requirements. Version documents, templates, examples, data, download names and protocol versions deliberately (document v0.3 is not wire protocol v01). Add a changelog and compatibility policy. Typst is the canonical publication source. The parallel Markdown drafts have been retired.
 
@@ -108,7 +109,7 @@ Other noncritical extensions restricted to no personal/conflicting identity data
 ## 6. Federation and lifecycle
 
 - Issuers own their CA hierarchies; IODM manages trust registry, not necessarily a universal root CA. CA keys dedicated to IODM, HSM/equivalent protection, root preferably offline. P-256 CA with critical CA basicConstraints and keyCertSign/cRLSign only; at most one intermediate (root pathLen <=1, direct issuing CA pathLen=0). All CA path members registered to same IID; no shared anchors across IID. Registry approval max one year; CRL issued at least daily, nextUpdate <=48 hours, prompt incident response. These are draft limits to review with owner.
-- Registry `/trust/v1/manifest.json`, detached DER CMS `/trust/v1/manifest.p7s`, CA DER under `/trust/v1/ca/`. JSON UTF-8, no BOM/duplicate or unknown fields, schemaVersion=1, increasing sequenceNumber <=2^53-1, issuedAt/nextUpdate UTC RFC3339, issuers array. IID four uppercase hex; hashes 64 uppercase hex SHA-256 over DER. Each issuer includes name, status, validity, securityContact and certificates with certificateId, role, status, URL, sha256. Roles trustAnchor/intermediate/manifestSigner; statuses active/suspended/withdrawn/expired. See trust.typ for complete baseline.
+- Registry `/trust/v1/manifest.json`, detached DER CMS `/trust/v1/manifest.p7s`, CA DER under `/trust/v1/ca/`. JSON UTF-8, no BOM/duplicate or unknown fields, schemaVersion=1, increasing sequenceNumber <=2^53-1, issuedAt/nextUpdate UTC RFC3339, issuers array. IID four uppercase hex; hashes 64 uppercase hex SHA-256 over DER. Each issuer includes name, status, validity, securityContact and certificates with certificateId, role, status, URL, sha256. Roles trustAnchor/intermediate/manifestSigner; statuses active/suspended/withdrawn/expired. See `standards/source/005-trust.typ` for the complete baseline.
 - Detached CMS SignedData, eContentType id-data, absent eContent, single signer P-256/SHA-256, signedAttrs content-type and message-digest, sign exact JSON bytes via CMS rules. Registry signer key installed independently, not trusted merely because embedded or delivered via HTTPS. Atomic update, persistent sequence high-water mark, identical bytes only for repeated sequence. Daily publish, max seven-day validity. Reject expired trust or stale revocation information; offline operation only while local trust and revocation data are valid. Never automatically trust web PKI, URLs from untrusted certs or card-supplied roots.
 - Batch manifests use same CMS shape but separate registered active manifestSigner for same IID, UUID manifestId, issuedAt/expiresAt, credentials array with iodmId/formFactor/profile/certificateSha256; max 10 MiB/10000 entries/30 days. Idempotent import, reject conflicts, no secret keys or personal data. Enrollment never grants rights or substitutes live proof of possession.
 - PACS/SKD decides access; authenticated and integrity-protected reader-to-controller transport, e.g. OSDP Secure Channel. Wiegand alone is not secure. Use collision-free local mapping for limited-bit legacy panels, never truncate/modulo. Do not claim secure proximity or relay resistance from challenge-response alone.
